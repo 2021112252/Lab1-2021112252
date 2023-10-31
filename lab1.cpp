@@ -35,11 +35,7 @@ char fileName[40];
 char filePath[50];
 char file[1024 * 1024];
 int len = sizeof(SOCKADDR);
-int recvSize;
-int Deliver(char* file, int ack);
-int Send(ifstream& infile, int seq, SOCKET socket, SOCKADDR* addr);
-int MoveSendWindow(int seq);
-int Read(ifstream& infile, char* buffer);
+
 //主函数
 int main(int argc, char* argv[]) {
 	// 加载套接字库
