@@ -1,10 +1,16 @@
-﻿
+﻿#include <stdlib.h>
+#include <time.h>
+#include <WinSock2.h>
+#include <WS2tcpip.h>
 #include <fstream>
 #pragma comment(lib,"ws2_32.lib")
 #define SERVER_PORT 12340 // 端口号
 #define SERVER_IP "0.0.0.0" // IP 地址
 #define SEQ_SIZE 16 // 序列号个数
-
+#define SWIN_SIZE 8 // 发送窗口大小
+#define RWIN_SIZE 8 // 接收窗口大小
+#define BUFFER_SIZE 1024 // 缓冲区大小
+#define LOSS_RATE 0.8 //丢包率
 using namespace std;
 struct recv {
 	bool used;
@@ -29,7 +35,11 @@ char fileName[40];
 char filePath[50];
 char file[1024 * 1024];
 int len = sizeof(SOCKADDR);
-
+int recvSize;
+int Deliver(char* file, int ack);
+int Send(ifstream& infile, int seq, SOCKET socket, SOCKADDR* addr);
+int MoveSendWindow(int seq);
+int Read(ifstream& infile, char* buffer);
 //主函数
 int main(int argc, char* argv[]) {
 	// 加载套接字库
